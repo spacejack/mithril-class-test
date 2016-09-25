@@ -9,18 +9,18 @@ declare namespace Mithril {
 
 	interface Hyperscript {
 		(selector: string, ...children: any[]): Vnode;
-		(component: IComponent | typeof Component, ...children: Hargs[]): Vnode;
+		(component: IComponent | FComponent | typeof Component, ...children: Hargs[]): Vnode;
 		fragment(attrs: any, children: any[]): Vnode;
 		trust(html: string): TrustedString;
 	}
 
 	interface RouteResolver {
 		render?: (vnode: Mithril.Vnode) => Mithril.Vnode
-		onmatch?: (resolve: (c: IComponent | typeof Component) => void, args: any, path: any) => void
+		onmatch?: (resolve: (c: IComponent | FComponent | typeof Component) => void, args: any, path: any) => void
 	}
 
 	interface RouteDefs {
-		[url: string]: IComponent | typeof Component | RouteResolver
+		[url: string]: IComponent | FComponent | typeof Component | RouteResolver
 	}
 
 	interface RouteOptions {
@@ -36,7 +36,7 @@ declare namespace Mithril {
 	}
 
 	interface Mount {
-		(element: Element, component: IComponent | typeof Component): void;
+		(element: Element, component: IComponent | FComponent | typeof Component): void;
 	}
 
 	interface WithAttr {
@@ -143,6 +143,7 @@ declare namespace Mithril {
 		events?: any;
 	}
 
+	/* Plain object component */
 	interface IComponent {
 		// Note: this return type requires TS 2.0
 		view: (vnode: Vnode) => Vnode | (Vnode | null)[] | null;
@@ -154,11 +155,10 @@ declare namespace Mithril {
 		onremove?: (vnode: Vnode) => void;
 		onbeforeupdate?: (vnode: Vnode, old: Vnode) => boolean;
 		onupdate?: (vnode: Vnode) => void;
-		//[property: string]: any;
 	}
 
-	class Component {
-		//constructor();
+	/* Class component */
+	class Component implements IComponent {
 		constructor (vnode?: Vnode);
 		view(vnode: Mithril.Vnode): Vnode | (Vnode | null)[] | null;
 		oninit?(vnode: Vnode): void;
@@ -167,6 +167,11 @@ declare namespace Mithril {
 		onremove?(vnode: Vnode): void;
 		onbeforeupdate?(vnode: Vnode, old: Vnode): boolean;
 		onupdate?(vnode: Vnode): void;
+	}
+
+	/* Factory component */
+	interface FComponent {
+		(vnode: Vnode): IComponent
 	}
 
 	interface TrustedString extends String {
