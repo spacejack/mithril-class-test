@@ -158,8 +158,8 @@ declare namespace Mithril {
 	}
 
 	class Component {
-		constructor();
-		//constructor (vnode: Vnode);
+		//constructor();
+		constructor (vnode?: Vnode);
 		view(vnode: Mithril.Vnode): Vnode | (Vnode | null)[] | null;
 		oninit?(vnode: Vnode): void;
 		oncreate?(vnode: Vnode): void;

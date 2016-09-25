@@ -20,7 +20,7 @@ interface Vec2 {
 //
 // LongPresser component
 //
-class LongPresser extends m.Component {
+export default class LongPresser extends m.Component {
 	el: HTMLElement
 	elSvg: SVGSVGElement
 	elBgCircle: SVGCircleElement
@@ -227,6 +227,3 @@ function removeFadeIn (el: any) {
 	el.style.opacity = '0'
 	el.classList.remove('longpresser-fade-in')
 }
-
-// Must do some funky casting to make a compatible type :(
-export default <any>LongPresser as typeof Mithril.Component
